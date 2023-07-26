@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast'
 import {FaSpinner} from 'react-icons/fa'
 import { FcGoogle } from "react-icons/fc";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 
 const Login = () => {
@@ -15,11 +15,48 @@ const Login = () => {
     resetPassword,
   } = useContext(AuthContext);
   const navigate = useNavigate()
+  const emailRef= useRef()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
 
+
+// handle signIn with email and password
+const handleSubmit = event => {
+  event.preventDefault()
+  const email = event.target.email.value;
+  const password = event.target.password.value;
+  console.log(email, password)
+  signIn(email, password)
+  .then(result=> {
+    console.log(result.user)
+    navigate(from, {replace:true})
+  })
+  .catch(error=>{
+    console.log(error.message)
+  })
+}
+
+
+// handle password reset
+const handleResetPassword = ()=>{
+const email = emailRef.current.value
+resetPassword(email).then(()=>{
+  toast.success("please check your email for password reset")
+  setLoading(false)
+})
+
+.catch(error=>{
+  setLoading(false)
+  console.log(error.message)
+  toast.error(error.message)
+})
+}
+
+  // handle google sign in 
   const handleGoogleSignIn = () => {
     signInWithGoogle().then((result) => {
       console.log(result.user);
-      navigate('/')
+      navigate(from, {replace:true})
     })
     .catch(error=>{
         setLoading(false)
@@ -37,7 +74,7 @@ const Login = () => {
             Sign in to access your account
           </p>
         </div>
-        <form
+        <form onSubmit ={handleSubmit}
           noValidate=""
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
@@ -48,6 +85,7 @@ const Login = () => {
                 Email address
               </label>
               <input
+              ref={emailRef}
                 type="email"
                 name="email"
                 id="email"
@@ -79,12 +117,12 @@ const Login = () => {
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-            {loading ? <FaSpinner className=" mx-auto " size={20}></FaSpinner> :"Continue" }  
+            {loading ? <FaSpinner className=" mx-auto animate-spin " size={20}></FaSpinner> :"Continue" }  
             </button>
           </div>
         </form>
         <div className="space-y-1">
-          <button className="text-xs hover:underline hover:text-rose-500 text-gray-400">
+          <button onClick={handleResetPassword} className="text-xs hover:underline hover:text-rose-500 text-gray-400">
             Forgot password?
           </button>
         </div>
