@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FcGoogle } from "react-icons/fc";
+
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 
@@ -110,7 +110,7 @@ const handleGoogleSignIn = () => {
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              Continue
+             {loading ? <FaSpinner className=" mx-auto animate-spin " size={20}></FaSpinner> :"Continue" }  
             </button>
           </div>
         </form>
@@ -127,7 +127,7 @@ const handleGoogleSignIn = () => {
           <p>Continue with Google</p>
         </div>
         <p className="px-6 text-sm text-center text-gray-400">
-          Already have an account?{" "}
+          Already have an account?
           <Link
             to="/login"
             className="hover:underline hover:text-rose-500 text-gray-600"
