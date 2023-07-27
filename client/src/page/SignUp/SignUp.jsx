@@ -20,7 +20,19 @@ const SignUp = () => {
 
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-// handle google sign in 
+
+// handle user registration 
+const handleSubmit = event => {
+  event.preventDefault();
+  const email = event.target.email.value;
+  const password = event.target.password.value;
+  const name = event.target.name.value;
+  const image = event.target.image.files[0]
+  console.log(image)
+}
+
+
+
 const handleGoogleSignIn = () => {
   signInWithGoogle().then((result) => {
     console.log(result.user);
@@ -43,7 +55,7 @@ const handleGoogleSignIn = () => {
           <h1 className="my-3 text-4xl font-bold">Sign Up</h1>
           <p className="text-sm text-gray-400">Welcome to AirCNC</p>
         </div>
-        <form
+        <form onSubmit={handleSubmit}
           noValidate=""
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
