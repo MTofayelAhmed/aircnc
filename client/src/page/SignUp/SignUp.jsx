@@ -12,7 +12,7 @@ const SignUp = () => {
     setLoading,
 
     createUser,
-    updateProfile,
+    updateUserProfile,
     signInWithGoogle,
     resetPassword,
   } = useContext(AuthContext);
@@ -28,7 +28,37 @@ const handleSubmit = event => {
   const password = event.target.password.value;
   const name = event.target.name.value;
   const image = event.target.image.files[0]
-  console.log(image)
+
+  const formData = new FormData()
+  formData.append("image", image)
+  const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgbb_Key}`
+  fetch (url, {
+    method: 'POST',
+    body: formData
+  }).then(res => res.json()).then(imageData => {
+    const imageURL = imageData.data.image_url
+    createUser(email, password)
+    .then((result) => {
+      // console.log(result.user);
+      updateUserProfile(name, imageURL)
+      .then(() => {
+       toast.success('signUp successful')
+        navigate(from, {replace:true})
+      })
+      .catch(error=>{
+          setLoading(false)
+          console.log(error.message)
+          toast.error(error.message)
+      })
+    
+    })
+    .catch(error=>{
+        setLoading(false)
+        console.log(error.message)
+        toast.error(error.message)
+    })
+    
+    console.log(imageData)} )
 }
 
 
@@ -146,7 +176,7 @@ const handleGoogleSignIn = () => {
           >
             Login
           </Link>
-          .
+          
         </p>
       </div>
     </div>
