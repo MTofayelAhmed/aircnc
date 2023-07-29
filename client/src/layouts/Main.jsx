@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../component/shared/navbar/Navbar"
+import Footer from "../component/shared/Footer/Footer"
 
 const Main = () => {
   return (
@@ -9,6 +10,7 @@ const Main = () => {
       <div className=" pt-28 pb-20">
       <Outlet></Outlet>
       </div>
+      <Footer></Footer>
      
     </div>
   )
