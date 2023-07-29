@@ -3,6 +3,7 @@ import Container from "../shared/Container";
 import Card from "../card/Card";
 import Loader from "../shared/Loader";
 import { useSearchParams } from "react-router-dom";
+import Heading from "../Heading/Heading";
 
 const Rooms = () => {
 
@@ -42,7 +43,12 @@ const Rooms = () => {
      <Card key={index} room ={room}></Card>
    ))}
  </div> : <div className=" pt-12">
+<Heading  
+title='no rooms available in this category'
+subtitle='please select other categories'
+center ={true}
 
+></Heading>
  </div>
    }
     </Container>
